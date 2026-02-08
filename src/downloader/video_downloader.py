@@ -2,7 +2,6 @@ import logging
 import random
 import yt_dlp
 import json
-import re
 
 CURRENT_NUMBER_OF_VIDEOS = 20
 
@@ -38,23 +37,6 @@ class YouTubeDownloaderHelper:
         random_video_info = random.choice(self._video_list)
         with open(data_dir, 'w', encoding="utf-8") as f:
             json.dump(random_video_info, f, ensure_ascii=False, indent=4)
-        
-
-    # def get_video_information(self) -> None:
-    #     if self._selected_video == "":
-    #         logger.warning("No video has been selected.")
-    #         return
-        
-    #     with yt_dlp.YoutubeDL(self.info_opts) as ydl:
-    #         video_info = ydl.extract_info(self._selected_video, download=False)
-
-    #     date = video_info["upload_date"]
-
-    #     self._video_info["upload_date"] = date
-    #     self.convert_date_to_int(date)
-
-    #     with open(data_dir, 'w', encoding="utf-8") as f:
-    #         json.dump(self._video_info, f, ensure_ascii=False, indent=4)
 
     @staticmethod
     def convert_date_to_int(value: str):
@@ -85,5 +67,3 @@ if __name__ == "__main__":
     ytdownloader = YouTubeDownloaderHelper(debug=True)
 
     ytdownloader.get_random_video_from_channel()
-    # ytdownloader.get_video_information()
-    # ytdownloader.download_video()

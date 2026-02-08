@@ -20,19 +20,18 @@ window.onload = function () {
     slider.addEventListener("input", () => {
         slider_display.textContent = sliderToDate(slider.value);
     });
-
-    initialize()
-};
-
-function initialize() {
-    document.getElementById("guess_button").addEventListener("click", checkAnswer);
-    solution.innerText = "";
     fetch("./daily/daily_info.json")
     .then(response => response.json())
     .then(data => {
         player.src = data.url; 
     })
     .catch(err => console.error("Failed to load video URL:", err));
+    initialize()
+};
+
+function initialize() {
+    document.getElementById("guess_button").addEventListener("click", checkAnswer);
+    solution.innerText = "";
 }
 
 
