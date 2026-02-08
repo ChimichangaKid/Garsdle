@@ -20,7 +20,7 @@ window.onload = function () {
     slider.addEventListener("input", () => {
         slider_display.textContent = sliderToDate(slider.value);
     });
-    fetch("./daily/daily_info.json")
+    fetch("./app/daily/daily_info.json")
     .then(response => {
         console.log("Response ok?", response.ok);
         return response.json();
@@ -38,7 +38,7 @@ function initialize() {
 
 
 function checkAnswer() {  
-    fetch("./daily/daily_info.json").then(response => response.json()).then(data => {
+    fetch("./app/daily/daily_info.json").then(response => response.json()).then(data => {
         todays_data = data.upload_date_int
     
         if (current_guess >= number_of_guesses) {

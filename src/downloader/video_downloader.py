@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
 youtube_channel = "https://www.youtube.com/@TheGarschive/shorts"
-data_dir = r"daily\daily_info.json"
+data_dir = r"app\daily\daily_info.json"
 
 
 class YouTubeDownloaderHelper:
@@ -25,7 +25,7 @@ class YouTubeDownloaderHelper:
         self._selected_video = ""
         self._video_path = "" 
         self._video_info = {}
-        with open(r"daily\video_list.json", "r") as f:
+        with open(r"app\daily\video_list.json", "r") as f:
             self._video_list = json.load(f)
         
         if debug:
