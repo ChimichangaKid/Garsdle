@@ -12,6 +12,7 @@ const slider_display = document.getElementById("slider_value");
 const hint = document.getElementById("hint_label");
 const solution = document.getElementById("solution");
 const num_guesses_label = document.getElementById("guesses_label");
+const player = document.getElementById("yt_player");
 
 
 
@@ -26,7 +27,15 @@ window.onload = function () {
 function initialize() {
     document.getElementById("guess_button").addEventListener("click", checkAnswer);
     solution.innerText = "";
+    fetch("./downloads/daily_info.json")
+    .then(response => response.json())
+    .then(data => {
+        player.src = data.url; 
+    })
+    .catch(err => console.error("Failed to load video URL:", err));
 }
+
+
 
 function checkAnswer() {  
     fetch("./downloads/daily_info.json").then(response => response.json()).then(data => {

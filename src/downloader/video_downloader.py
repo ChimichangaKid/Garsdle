@@ -3,6 +3,7 @@ import random
 import yt_dlp
 import json
 import os
+import re
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
@@ -43,6 +44,13 @@ class YouTubeDownloaderHelper:
         shorts = channel_info["entries"] 
 
         self._selected_video = random.choice(shorts)["url"]
+        match = re.search(r"shorts/([a-zA-Z0-9_-]+)", self._selected_video)
+        
+    
+        video_id = match.group(1)
+        embed_url = f"https://www.youtube.com/embed/{video_id}?rel=0&modestbranding=1&autoplay=1&mute=1&controls=1"
+
+        self._video_info["url"] = embed_url
 
     def get_video_information(self) -> None:
         if self._selected_video == "":
@@ -77,7 +85,7 @@ class YouTubeDownloaderHelper:
         year = int(value[:4])
         month = int(value[4:6])
 
-        print(f"year {year}, month {month}")
+
 
         self._video_info["upload_date_int"] = 12 * (year - 2023) + month
 
@@ -86,4 +94,4 @@ if __name__ == "__main__":
 
     ytdownloader.get_random_video_from_channel()
     ytdownloader.get_video_information()
-    ytdownloader.download_video()
+    # ytdownloader.download_video()
