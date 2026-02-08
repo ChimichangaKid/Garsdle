@@ -26,7 +26,7 @@ window.onload = function () {
         return response.json();
     })
     .then(data => {
-        player.src = data.url;
+        player.src = data.embed_url;
     })
     .catch(err => console.error("Failed to load video URL:", err));
     initialize()

@@ -50,7 +50,7 @@ class YouTubeDownloaderHelper:
             try:
                 info_dict = ydl.extract_info(self._channel, download=False)
                 # For a playlist/channel, entries contains all videos
-                for entry in info_dict.get("entries", [])[307:]:
+                for entry in info_dict.get("entries", [])[498:]:
 
                     info = ydl.extract_info(entry["url"], download=False)
                     video_data = {
