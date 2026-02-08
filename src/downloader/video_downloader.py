@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
 youtube_channel = "https://www.youtube.com/@TheGarschive/shorts"
-data_dir = r"app\daily\daily_info.json"
+data_dir = r"app/daily/daily_info.json"
 
 
 class YouTubeDownloaderHelper:
@@ -59,7 +59,7 @@ class YouTubeDownloaderHelper:
                         "upload_date_int": self.convert_date_to_int(info.get("upload_date")),
                     }
                     self._video_list.append(video_data)
-                    with open("./app/daily/video_list.json", "w") as f:
+                    with open("app/daily/video_list.json", "w") as f:
                         json.dump(self._video_list, f, indent=4)
             except Exception as e:
                 print(f"Error fetching channel info: {e}")
