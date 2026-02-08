@@ -26,7 +26,7 @@ class YouTubeDownloaderHelper:
         self._selected_video = ""
         self._video_path = "" 
         self._video_info = {}
-        with open(r"app\daily\video_list.json", "r") as f:
+        with open(r".\app\daily\video_list.json", "r") as f:
             self._video_list = json.load(f)
         
         if debug:
@@ -59,7 +59,7 @@ class YouTubeDownloaderHelper:
                         "upload_date_int": self.convert_date_to_int(info.get("upload_date")),
                     }
                     self._video_list.append(video_data)
-                    with open("app/daily/video_list.json", "w") as f:
+                    with open("./app/daily/video_list.json", "w") as f:
                         json.dump(self._video_list, f, indent=4)
             except Exception as e:
                 print(f"Error fetching channel info: {e}")
