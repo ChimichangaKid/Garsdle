@@ -26,7 +26,7 @@ class YouTubeDownloaderHelper:
         self._selected_video = ""
         self._video_path = "" 
         self._video_info = {}
-        with open(r".\app\daily\video_list.json", "r") as f:
+        with open("./app/daily/video_list.json", "r") as f:
             self._video_list = json.load(f)
         
         if debug:
