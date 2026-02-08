@@ -2,27 +2,23 @@ import logging
 import random
 import yt_dlp
 import json
-import os
+
+CURRENT_NUMBER_OF_VIDEOS = 1000
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
 youtube_channel = "https://www.youtube.com/@TheGarschive/shorts"
-data_dir = r"downloads\daily_info.json"
+data_dir = r"app\daily\daily_info.json"
+
 
 class YouTubeDownloaderHelper:
 
     info_opts = {
         "extract_flat": True, 
-    }
-
-    download_opts = {
-        "format": "bv*+ba/b",
-        "merge_output_format": "mp4",
-        "outtmpl": "downloads/daily.mp4",
-        "force_overwrites": True,
-        "nopart": True,
-        "continuedl": False,
+        "skip_download": True,
+        "playlistend": CURRENT_NUMBER_OF_VIDEOS,
+        "verbose": False,
     }
 
     def __init__(self, channel=youtube_channel, debug=False):
@@ -30,60 +26,47 @@ class YouTubeDownloaderHelper:
         self._selected_video = ""
         self._video_path = "" 
         self._video_info = {}
+        with open("./app/daily/video_list.json", "r") as f:
+            self._video_list = json.load(f)
         
         if debug:
             logger.setLevel(logging.DEBUG)
 
     def get_random_video_from_channel(self) -> None:
         #logger.debug("Starting info extraction.")
-        with yt_dlp.YoutubeDL(self.info_opts) as ydl:
-            channel_info = ydl.extract_info(self._channel, download=False)
-        
-        # this was found just by printing output until I found the shorts
-        shorts = channel_info["entries"] 
 
-        self._selected_video = random.choice(shorts)["url"]
-
-    def get_video_information(self) -> None:
-        if self._selected_video == "":
-            logger.warning("No video has been selected.")
-            return
-        
-        with yt_dlp.YoutubeDL(self.info_opts) as ydl:
-            video_info = ydl.extract_info(self._selected_video, download=False)
-
-        date = video_info["upload_date"]
-
-        self._video_info["upload_date"] = date
-        self.convert_date_to_int(date)
-
+        random_video_info = random.choice(self._video_list)
         with open(data_dir, 'w', encoding="utf-8") as f:
-            json.dump(self._video_info, f, ensure_ascii=False, indent=4)
+            json.dump(random_video_info, f, ensure_ascii=False, indent=4)
 
-    def download_video(self) -> None:
-        if self._selected_video == "":
-            logger.warning("No video has been selected.")
-            return
-
-        if os.path.exists("downloads/daily_video.mp4"):
-            os.remove("downloads/daily_video.mp4")
-        
-        with yt_dlp.YoutubeDL(self.download_opts) as ydl:
-            ydl.download([self._selected_video])
-
-            os.rename("downloads/daily.mp4", "downloads/daily_video.mp4")
-
-    def convert_date_to_int(self, value: str):
+    @staticmethod
+    def convert_date_to_int(value: str):
         year = int(value[:4])
         month = int(value[4:6])
+        return 12 * (year - 2023) + month
 
-        print(f"year {year}, month {month}")
+    def get_data(self):
+        with yt_dlp.YoutubeDL(self.info_opts) as ydl:
+            try:
+                info_dict = ydl.extract_info(self._channel, download=False)
+                # For a playlist/channel, entries contains all videos
+                for entry in info_dict.get("entries", [])[498:]:
 
-        self._video_info["upload_date_int"] = 12 * (year - 2023) + month
+                    info = ydl.extract_info(entry["url"], download=False)
+                    video_data = {
+                        "embed_url": f"https://www.youtube.com/embed/{info.get('id')}?rel=0&modestbranding=1&autoplay=0&mute=1&controls=1",
+                        "upload_date": info.get("upload_date"),
+                        "upload_date_int": self.convert_date_to_int(info.get("upload_date")),
+                    }
+                    self._video_list.append(video_data)
+                    with open("./app/daily/video_list.json", "w") as f:
+                        json.dump(self._video_list, f, indent=4)
+            except Exception as e:
+                print(f"Error fetching channel info: {e}")
 
 if __name__ == "__main__":
     ytdownloader = YouTubeDownloaderHelper(debug=True)
-
     ytdownloader.get_random_video_from_channel()
-    ytdownloader.get_video_information()
-    ytdownloader.download_video()
+    # ytdownloader.get_data()
+
+    # print(len(ytdownloader._video_list))

@@ -15,23 +15,30 @@
         <h1 class="title">GARSDLE</h1>
         <hr>
 
-        <video  width="240" height="320" controls>
-            <source src="downloads/daily_video.mp4", type="video/mp4"> 
-        </video>
+        <iframe id="yt_player" width="540" height="960" frameborder="0" allowfullscreen>
+        
+        </iframe>
         
         <div class="slidecontainer">
-            <input type="range" min="1" max="100" value="50" class="slider" id="time_slider">
+            <input type="range" min="1" max="40" value="1" class="slider" id="time_slider">
         </div>
 
-        <span id="slider_value">Feb 2026</span> 
+        <span id="slider_value">Jan 2023</span> 
+
+        <br>
 
         <button type="button" id="guess_button">
             Submit Guess
         </button>
-
+        
+        <br>
+        <br>
         <span id="hint_label"></span>
 
+        <br>
         <span id="solution"></span>
+
+        <br>
 
         <span id="guesses_label">Number of Guesses Left = 5</span>
     </body>

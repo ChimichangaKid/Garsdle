@@ -12,6 +12,7 @@ const slider_display = document.getElementById("slider_value");
 const hint = document.getElementById("hint_label");
 const solution = document.getElementById("solution");
 const num_guesses_label = document.getElementById("guesses_label");
+const player = document.getElementById("yt_player");
 
 
 
@@ -19,7 +20,15 @@ window.onload = function () {
     slider.addEventListener("input", () => {
         slider_display.textContent = sliderToDate(slider.value);
     });
-
+    fetch("./app/daily/daily_info.json")
+    .then(response => {
+        console.log("Response ok?", response.ok);
+        return response.json();
+    })
+    .then(data => {
+        player.src = data.embed_url;
+    })
+    .catch(err => console.error("Failed to load video URL:", err));
     initialize()
 };
 
@@ -29,10 +38,10 @@ function initialize() {
 }
 
 function checkAnswer() {  
-    fetch("./downloads/daily_info.json").then(response => response.json()).then(data => {
+    fetch("./app/daily/daily_info.json").then(response => response.json()).then(data => {
         todays_data = data.upload_date_int
     
-        if (current_guess >= number_of_guesses) {
+        if (current_guess >= number_of_guesses || win == true) {
             return;
         }
 
@@ -41,6 +50,7 @@ function checkAnswer() {
         if (guessed_value == todays_data) {
             solution.innerText = "You Win!";
             win = true;
+            hint.textContent = "";
         }
 
         if (guessed_value > todays_data) {
@@ -55,6 +65,7 @@ function checkAnswer() {
 
         if(current_guess >= number_of_guesses){
             solution.innerText = "You Lose.";
+            hint.textContent = "";
         }
     });
 
