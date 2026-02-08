@@ -1,0 +1,40 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>GARSDLE</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale =0, user-scalable=no">
+
+        <link rel="stylesheet" href="app/garsdle.css">
+        <link rel="icon" href="app/icon.png" type="image/png">
+        <script src="app/garsdle.js" defer></script>
+    </head>
+
+    <body>
+        <h1 class="title">GARSDLE</h1>
+        <hr>
+
+        <video  width="240" height="320" controls>
+            <source src="downloads/daily_video.mp4", type="video/mp4"> 
+        </video>
+        
+        <div class="slidecontainer">
+            <input type="range" min="1" max="100" value="50" class="slider" id="time_slider">
+        </div>
+
+        <span id="slider_value">Feb 2026</span> 
+
+        <button type="button" id="guess_button">
+            Submit Guess
+        </button>
+
+        <span id="hint_label"></span>
+
+        <span id="solution"></span>
+
+        <span id="guesses_label">Number of Guesses Left = 5</span>
+    </body>
+
+
+</html>
