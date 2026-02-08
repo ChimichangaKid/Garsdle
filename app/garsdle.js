@@ -37,13 +37,11 @@ function initialize() {
     solution.innerText = "";
 }
 
-
-
 function checkAnswer() {  
     fetch("./app/daily/daily_info.json").then(response => response.json()).then(data => {
         todays_data = data.upload_date_int
     
-        if (current_guess >= number_of_guesses) {
+        if (current_guess >= number_of_guesses || win == true) {
             return;
         }
 
@@ -52,6 +50,7 @@ function checkAnswer() {
         if (guessed_value == todays_data) {
             solution.innerText = "You Win!";
             win = true;
+            hint.textContent = "";
         }
 
         if (guessed_value > todays_data) {
@@ -66,6 +65,7 @@ function checkAnswer() {
 
         if(current_guess >= number_of_guesses){
             solution.innerText = "You Lose.";
+            hint.textContent = "";
         }
     });
 
