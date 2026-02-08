@@ -66,7 +66,7 @@ class YouTubeDownloaderHelper:
 
 if __name__ == "__main__":
     ytdownloader = YouTubeDownloaderHelper(debug=True)
+    ytdownloader.get_random_video_from_channel()
+    # ytdownloader.get_data()
 
-    ytdownloader.get_data()
-
-    print(len(ytdownloader._video_list))
+    # print(len(ytdownloader._video_list))
