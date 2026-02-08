@@ -15,16 +15,18 @@ class YouTubeDownloaderHelper:
 
     info_opts = {
         "extract_flat": True, 
+        "skip_download": True,
+        "playlistend": 200,
     }
 
-    download_opts = {
-        "format": "bv*+ba/b",
-        "merge_output_format": "mp4",
-        "outtmpl": "downloads/daily.mp4",
-        "force_overwrites": True,
-        "nopart": True,
-        "continuedl": False,
-    }
+    # download_opts = {
+    #     "format": "bv*+ba/b",
+    #     "merge_output_format": "mp4",
+    #     "outtmpl": "downloads/daily.mp4",
+    #     "force_overwrites": True,
+    #     "nopart": True,
+    #     "continuedl": False,
+    # }
 
     def __init__(self, channel=youtube_channel, debug=False):
         self._channel = channel
@@ -68,19 +70,6 @@ class YouTubeDownloaderHelper:
         with open(data_dir, 'w', encoding="utf-8") as f:
             json.dump(self._video_info, f, ensure_ascii=False, indent=4)
 
-    def download_video(self) -> None:
-        if self._selected_video == "":
-            logger.warning("No video has been selected.")
-            return
-
-        if os.path.exists("downloads/daily_video.mp4"):
-            os.remove("downloads/daily_video.mp4")
-        
-        with yt_dlp.YoutubeDL(self.download_opts) as ydl:
-            ydl.download([self._selected_video])
-
-            os.rename("downloads/daily.mp4", "downloads/daily_video.mp4")
-
     def convert_date_to_int(self, value: str):
         year = int(value[:4])
         month = int(value[4:6])
@@ -93,5 +82,5 @@ if __name__ == "__main__":
     ytdownloader = YouTubeDownloaderHelper(debug=True)
 
     ytdownloader.get_random_video_from_channel()
-    ytdownloader.get_video_information()
+    # ytdownloader.get_video_information()
     # ytdownloader.download_video()
