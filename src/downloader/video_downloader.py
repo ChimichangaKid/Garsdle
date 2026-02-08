@@ -3,7 +3,7 @@ import random
 import yt_dlp
 import json
 
-CURRENT_NUMBER_OF_VIDEOS = 20
+CURRENT_NUMBER_OF_VIDEOS = 1000
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
@@ -18,6 +18,7 @@ class YouTubeDownloaderHelper:
         "extract_flat": True, 
         "skip_download": True,
         "playlistend": CURRENT_NUMBER_OF_VIDEOS,
+        "verbose": False,
     }
 
     def __init__(self, channel=youtube_channel, debug=False):
@@ -49,7 +50,7 @@ class YouTubeDownloaderHelper:
             try:
                 info_dict = ydl.extract_info(self._channel, download=False)
                 # For a playlist/channel, entries contains all videos
-                for entry in info_dict.get("entries", []):
+                for entry in info_dict.get("entries", [])[307:]:
 
                     info = ydl.extract_info(entry["url"], download=False)
                     video_data = {
@@ -58,7 +59,7 @@ class YouTubeDownloaderHelper:
                         "upload_date_int": self.convert_date_to_int(info.get("upload_date")),
                     }
                     self._video_list.append(video_data)
-                    with open("daily/video_list.json", "w") as f:
+                    with open("app/daily/video_list.json", "w") as f:
                         json.dump(self._video_list, f, indent=4)
             except Exception as e:
                 print(f"Error fetching channel info: {e}")
@@ -66,4 +67,6 @@ class YouTubeDownloaderHelper:
 if __name__ == "__main__":
     ytdownloader = YouTubeDownloaderHelper(debug=True)
 
-    ytdownloader.get_random_video_from_channel()
+    ytdownloader.get_data()
+
+    print(len(ytdownloader._video_list))

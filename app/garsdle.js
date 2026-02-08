@@ -25,7 +25,9 @@ window.onload = function () {
         console.log("Response ok?", response.ok);
         return response.json();
     })
-    .then(data => console.log("JSON data:", data))
+    .then(data => {
+        player.src = data.url;
+    })
     .catch(err => console.error("Failed to load video URL:", err));
     initialize()
 };
