@@ -21,10 +21,11 @@ window.onload = function () {
         slider_display.textContent = sliderToDate(slider.value);
     });
     fetch("./daily/daily_info.json")
-    .then(response => response.json())
-    .then(data => {
-        player.src = data.url; 
+    .then(response => {
+        console.log("Response ok?", response.ok);
+        return response.json();
     })
+    .then(data => console.log("JSON data:", data))
     .catch(err => console.error("Failed to load video URL:", err));
     initialize()
 };
