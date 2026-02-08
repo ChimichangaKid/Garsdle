@@ -27,7 +27,7 @@ window.onload = function () {
 function initialize() {
     document.getElementById("guess_button").addEventListener("click", checkAnswer);
     solution.innerText = "";
-    fetch("./downloads/daily_info.json")
+    fetch("./daily/daily_info.json")
     .then(response => response.json())
     .then(data => {
         player.src = data.url; 
@@ -38,7 +38,7 @@ function initialize() {
 
 
 function checkAnswer() {  
-    fetch("./downloads/daily_info.json").then(response => response.json()).then(data => {
+    fetch("./daily/daily_info.json").then(response => response.json()).then(data => {
         todays_data = data.upload_date_int
     
         if (current_guess >= number_of_guesses) {
